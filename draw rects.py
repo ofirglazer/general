@@ -18,6 +18,7 @@ running = True
 drawing = False
 rect_start = (0, 0)
 rect_size = (0, 0)
+rects = []
 
 while running:
     for event in pygame.event.get():
@@ -30,12 +31,18 @@ while running:
             rect_end = event.pos
             rect_size = (rect_end[0] - rect_start[0], rect_end[1] - rect_start[1])
             drawing = False
+            rect = pygame.Rect(rect_start, rect_size)
+            rects.append(rect)
+            rect_start = (0, 0)
+            rect_size = (0, 0)
         elif event.type == MOUSEMOTION and drawing == True:
             rect_end = event.pos
             rect_size = (rect_end[0] - rect_start[0], rect_end[1] - rect_start[1])
 
     screen.fill(background)
-    pygame.draw.rect(screen, RED, (rect_start, rect_size), 2)
+    for rect in rects:
+        pygame.draw.rect(screen, RED, rect, 3)
+    pygame.draw.rect(screen, BLUE, (rect_start, rect_size), 1)
 
     # pygame.draw.rect(screen, RED, (50, 20, 12, 100))
     # pygame.draw.rect(screen, BLUE, (150, 100, 120, 100))
