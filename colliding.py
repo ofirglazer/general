@@ -34,6 +34,7 @@ def randon_rects(n_rects):
         rects.append(Rect(point, (20, 20)))
     return rects
 
+
 screen = pygame.display.set_mode((width, height))
 
 background = GRAY
@@ -69,7 +70,6 @@ while running:
             pygame.draw.rect(screen, GREEN, rand_rect, 2, 0)
         else:
             pygame.draw.rect(screen, BLACK, rand_rect, 2, 0)
-
 
     pygame.display.flip()
 
