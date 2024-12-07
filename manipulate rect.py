@@ -19,6 +19,7 @@ screen = pygame.display.set_mode((width, height))
 background = GRAY
 
 running = True
+moving = False
 rect0 = Rect(50, 60, 200, 80)
 rect1 = Rect(100, 20, 100, 140)
 direction_dict = {K_UP: (0, -5), K_DOWN: (0, 5), K_LEFT: (-5, 0), K_RIGHT: (5, 0)}
@@ -46,14 +47,24 @@ while running:
                     rect0.inflate_ip(direction_dict[event.key])
                 else:
                     rect0.move_ip(direction_dict[event.key])
+        elif event.type == MOUSEBUTTONDOWN:
+            if rect1.collidepoint(event.pos):
+                moving = True
+        elif event.type == MOUSEBUTTONUP:
+            moving = False
+        elif event.type == MOUSEMOTION and moving is True:
+            rect1.move_ip(event.rel)
 
     screen.fill(background)
     union = rect0.union(rect1)
     clip = rect0.clip(rect1)
     pygame.draw.rect(screen, YELLOW, union)
+    pygame.draw.rect(screen, RED, rect1)
     pygame.draw.rect(screen, GREEN, clip)
     pygame.draw.rect(screen, BLUE, rect0, 3)
-    pygame.draw.rect(screen, RED, rect1, 3)
+    if moving is True:
+        pygame.draw.rect(screen, BLACK, rect1, 2)
+
 
     pygame.display.flip()
 
