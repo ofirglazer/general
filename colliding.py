@@ -46,8 +46,9 @@ direction_dict = {K_UP: (0, -5), K_DOWN: (0, 5), K_LEFT: (-5, 0), K_RIGHT: (5, 0
 
 n_points = 100
 n_rects = 50
-points = randon_points(n_points)
-rects = randon_rects(n_rects)
+points = []
+rects = []
+intersecting = []
 
 while running:
     for event in pygame.event.get():
@@ -58,6 +59,13 @@ while running:
                 points = randon_points(n_points)
                 rects = randon_rects(n_rects)
 
+                for i in range(n_rects):
+                    for j in range(i + 1, n_rects):
+                        if rects[i].colliderect(rects[j]):
+                            intersecting.append(rects[i])
+                            intersecting.append(rects[j])
+                            break
+
     screen.fill(background)
     pygame.draw.rect(screen, RED, rect, 2)
     for point in points:
@@ -67,10 +75,11 @@ while running:
             pygame.draw.circle(screen, BLACK, point, 4, 0)
     for rand_rect in rects:
         if rect.colliderect(rand_rect):
-            pygame.draw.rect(screen, GREEN, rand_rect, 2, 0)
+            pygame.draw.rect(screen, GREEN, rand_rect)
+        elif rand_rect in intersecting:
+            pygame.draw.rect(screen, RED, rand_rect)
+            pygame.draw.rect(screen, BLACK, rand_rect, 2)
         else:
-            pygame.draw.rect(screen, BLACK, rand_rect, 2, 0)
-
-    pygame.display.flip()
+            pygame.display.flip()
 
 pygame.quit()
